@@ -3,9 +3,14 @@
 > Painel de **monitoramento de frota em tempo real** — mapa ao vivo, indicadores e telemetria, com uma **API REST** (Laravel) consumida por uma **SPA em Vue 3**.
 
 [![CI](https://github.com/ReneMartins1983/GeoPulse/actions/workflows/ci.yml/badge.svg)](https://github.com/ReneMartins1983/GeoPulse/actions/workflows/ci.yml)
+[![Demo](https://img.shields.io/badge/demo-online-success)](https://geopulse-crsn.onrender.com)
 ![Laravel](https://img.shields.io/badge/Laravel-12-FF2D20?logo=laravel&logoColor=white)
 ![Vue](https://img.shields.io/badge/Vue-3-4FC08D?logo=vuedotjs&logoColor=white)
 ![PHP](https://img.shields.io/badge/PHP-8.3-777BB4?logo=php&logoColor=white)
+
+🌐 **Demo ao vivo:** **<https://geopulse-crsn.onrender.com>**
+
+> Roda no plano gratuito do Render: o primeiro acesso após inatividade pode levar ~30–50s para "acordar".
 
 O GeoPulse simula uma frota de veículos que se movimenta em tempo real. O back-end
 expõe uma **API REST** com a posição e a telemetria dos veículos; o front-end é uma
