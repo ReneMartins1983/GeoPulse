@@ -45,6 +45,43 @@ expõe uma **API REST** com a posição e a telemetria dos veículos; o front-en
   comando `php artisan telemetry:tick` (agendável).
 - **SPA Vue 3** consome a API e faz **polling** a cada 5s, atualizando mapa, KPIs e gráfico.
 
+## ⚙️ Como funciona
+
+### Fluxo dos dados
+
+```
+[Simulação] ──grava──> [MySQL] <──consulta── [API REST] ──JSON──> [SPA Vue]
+   (tick)            vehicles/readings                          mapa + KPIs + gráfico
+     ▲                                                                │
+     └───────────────── a cada 5s a SPA chama a API ──────────────────┘
+```
+
+### Ciclo de atualização (a cada 5s)
+
+1. A SPA chama `GET /api/stats` e `GET /api/vehicles`.
+2. A API avança a simulação se necessário, consulta o banco e devolve JSON (via API Resources).
+3. A SPA atualiza os marcadores do mapa e os KPIs; para o veículo selecionado, busca
+   `GET /api/vehicles/{id}/readings` e redesenha o gráfico.
+
+### Simulação da frota
+
+O `TelemetryService` faz, a cada *tick*, para cada veículo: sorteia status/velocidade,
+move a posição um passo na direção atual (*random walk* ao redor de Novo Hamburgo/RS,
+voltando ao centro se afastar demais), consome combustível e grava uma leitura.
+
+Para a demo ficar "viva" **sem um worker dedicado**, o tick é disparado pela própria API
+de forma **throttled** (`tickIfStale`, no máximo a cada ~4s). Em produção real, o mesmo
+passo roda via `php artisan telemetry:tick` agendado.
+
+### Componentes da SPA (`resources/js/components/`)
+
+| Componente | Responsabilidade |
+| --- | --- |
+| `Dashboard.vue` | Orquestra: busca a API, faz o polling e distribui os dados |
+| `FleetMap.vue` | Mapa Leaflet — marcadores por status, clique seleciona o veículo |
+| `SpeedChart.vue` | Gráfico Chart.js (velocidade + combustível) do veículo |
+| `StatCard.vue` | Cartões de indicadores (KPIs) |
+
 ## 🚀 Como rodar
 
 Pré-requisitos: **Docker** e **Docker Compose**.
