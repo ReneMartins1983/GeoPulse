@@ -1,0 +1,22 @@
+# Blueprint do Render — cria a demo a partir do repositório.
+# No Render: New + > Blueprint > selecione este repositório.
+services:
+  - type: web
+    name: geopulse
+    runtime: docker
+    dockerfilePath: ./Dockerfile.render
+    plan: free
+    region: oregon
+    envVars:
+      - key: APP_KEY
+        sync: false
+      - key: APP_URL
+        sync: false
+      - key: APP_NAME
+        value: GeoPulse
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_LOCALE
+        value: pt_BR
